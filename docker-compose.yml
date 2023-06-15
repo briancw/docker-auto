@@ -1,7 +1,7 @@
 services:
     auto:
         container_name: auto
-        image: auto
+        image: auto:0.1.0
         build:
             dockerfile: Dockerfile
         volumes:
@@ -15,8 +15,8 @@ services:
             - launch.py
             - --listen
             - --xformers
-            - --data-dir=/home/auto/data
-            - --embeddings-dir=/home/auto/data/embeddings
+            - --data-dir=/home/auto/sd/data
+            - --embeddings-dir=/home/auto/sd/data/embeddings
             - --allow-code
             - --enable-insecure-extension-acces
         deploy:
