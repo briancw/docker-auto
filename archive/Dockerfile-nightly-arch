@@ -1,0 +1,35 @@
+##
+#  Cuda 12.1 Testing
+#  Cuda 12.1 works with Automatic1111, but was about 25% slower for me
+##
+
+FROM archlinux
+
+RUN sed -i 's/#ParallelDownloads = [0-9]/ParallelDownloads = 10/' /etc/pacman.conf
+RUN pacman -Syu --noconfirm
+RUN pacman -S --noconfirm git curl python python-pip mesa
+
+# Setup Virtualenv
+ENV VIRTUAL_ENV=/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Python Deps
+RUN pip install -U pip setuptools wheel
+RUN pip install --pre torch torchvision --index-url https://download.pytorch.org/whl/nightly/cu121
+
+RUN useradd -m auto
+RUN chown -R auto:auto /venv
+USER auto
+
+# Install Automatic1111
+ADD https://api.github.com/repos/AUTOMATIC1111/stable-diffusion-webui/git/refs/heads/master version.json
+RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /home/auto/sd
+WORKDIR /home/auto/sd
+ENV install_dir=/home/auto/sd
+RUN pip install -r requirements_versions.txt
+#RUN pip install xformers
+RUN /bin/bash -c "/home/auto/sd/webui.sh --skip-torch-cuda-test --exit"
+
+ENV PYTHONUNBUFFERED=1
+CMD ["python", "launch.py", "--listen", "--xformers", "--data-dir=/home/auto/sd/data", "--embeddings-dir=/home/auto/sd/data/models/embeddings"]
