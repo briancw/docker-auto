@@ -29,5 +29,9 @@ RUN pip install -r requirements_versions.txt
 RUN pip install xformers
 RUN /bin/bash -c "/home/auto/sd/webui.sh --skip-torch-cuda-test --exit"
 
+# Install Codeformer deps
+RUN wget https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth -P repositories/CodeFormer/weights/facelib/
+RUN wget https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth -P repositories/CodeFormer/weights/facelib/
+
 ENV PYTHONUNBUFFERED=1
 CMD ["python", "launch.py", "--listen", "--xformers", "--data-dir=/home/auto/sd/data", "--embeddings-dir=/home/auto/sd/data/models/embeddings"]
