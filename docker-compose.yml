@@ -5,7 +5,8 @@ services:
         build:
             dockerfile: Dockerfile
         volumes:
-            - ./data:/home/auto/data
+            - cache:/home/auto/.cache
+            - ./data:/home/auto/sd/data
             - ./outputs:/home/auto/sd/outputs
         ports:
             - 7860:7860
@@ -25,3 +26,6 @@ services:
                         - driver: nvidia
                           capabilities: [gpu]
                           device_ids: ['0']
+
+volumes:
+    cache:

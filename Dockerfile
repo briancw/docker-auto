@@ -30,4 +30,4 @@ RUN pip install xformers
 RUN /bin/bash -c "/home/auto/sd/webui.sh --skip-torch-cuda-test --exit"
 
 ENV PYTHONUNBUFFERED=1
-CMD ["python", "launch.py", "--listen", "--xformers", "--data-dir=/home/auto/data", "--embeddings-dir=/home/auto/data/models/embeddings"]
+CMD ["python", "launch.py", "--listen", "--xformers", "--data-dir=/home/auto/sd/data", "--embeddings-dir=/home/auto/sd/data/models/embeddings"]
