@@ -1,10 +1,7 @@
-FROM debian:bullseye
+FROM python:3.10.12-slim-bullseye
 
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y git curl wget build-essential libgles2-mesa-dev libgoogle-perftools-dev pkg-config
-
-# Install Python
-RUN apt-get install -y python3 python3-pip python3-venv
 
 # Switch to non root user
 RUN adduser auto
@@ -33,5 +30,12 @@ RUN /bin/bash -c "/home/auto/sd/webui.sh --skip-torch-cuda-test --exit"
 RUN wget https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth -P repositories/CodeFormer/weights/facelib/
 RUN wget https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth -P repositories/CodeFormer/weights/facelib/
 
+# Install deps for extension image-browser
+RUN pip install mediapipe svglib fvcore
+RUN pip install image-reward send2trash
+
+# Set some ENV vars
+ENV LD_PRELOAD="libtcmalloc.so"
+ENV SAFETENSORS_FAST_GPU=1
 ENV PYTHONUNBUFFERED=1
 CMD ["python", "launch.py", "--listen", "--xformers", "--data-dir=/home/auto/sd/data", "--embeddings-dir=/home/auto/sd/data/models/embeddings"]
