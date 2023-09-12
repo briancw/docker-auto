@@ -1,7 +1,7 @@
 services:
     auto:
         container_name: auto
-        image: auto:0.1.0
+        image: auto:0.2.0
         build:
             dockerfile: Dockerfile
         volumes:
