@@ -6,8 +6,8 @@ services:
             dockerfile: Dockerfile
         volumes:
             - cache:/home/auto/.cache
-            - ./data:/home/sdauto/data
-            - ./outputs:/home/sdauto/outputs
+            - ./data:/home/sd/auto/data
+            - ./outputs:/home/sd/auto/outputs
         ports:
             - 7860:7860
         command:
@@ -15,8 +15,8 @@ services:
             - launch.py
             - --listen
             - --xformers
-            - --data-dir=/home/sdauto/data
-            - --embeddings-dir=/home/sdauto/data/embeddings
+            - --data-dir=/home/sd/auto/data
+            - --embeddings-dir=/home/sd/auto/data/embeddings
             - --allow-code
             - --enable-insecure-extension-access
         deploy:
