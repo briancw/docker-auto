@@ -1,13 +1,15 @@
 services:
     auto:
         container_name: auto
-        image: auto:0.2.0
+        image: auto
         build:
             dockerfile: Dockerfile
         volumes:
             - cache:/home/auto/.cache
-            - ./data:/home/auto/sd/data
-            - ./outputs:/home/auto/sd/outputs
+            # - ./data:/home/auto/sd/data
+            # - ./outputs:/home/auto/sd/outputs
+            - /mnt/ml/sd-docker/data:/home/auto/sd/data
+            - /mnt/ml/sd-docker/outputs:/home/auto/sd/outputs
         ports:
             - 7860:7860
         command:
