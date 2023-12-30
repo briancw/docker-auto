@@ -1,6 +1,12 @@
-FROM python:3.10.12-slim-bookworm
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
-RUN apt-get update -y
+# Hide some banner stuff
+RUN rm /opt/nvidia/entrypoint.d/15-container-copyright.txt
+RUN rm /opt/nvidia/entrypoint.d/30-container-license.txt
+RUN rm /opt/nvidia/entrypoint.d/10-banner.sh
+RUN rm /opt/nvidia/entrypoint.d/12-banner.sh
+
+RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y \
     git \
@@ -11,7 +17,10 @@ RUN apt-get install -y \
     libgles2-mesa-dev \
     libglib2.0-0 \
     libgoogle-perftools-dev \
-    pkg-config
+    pkg-config \
+    python3 \
+    python3-pip \
+    python3-venv
 
 # Switch to non root user
 RUN adduser sd
